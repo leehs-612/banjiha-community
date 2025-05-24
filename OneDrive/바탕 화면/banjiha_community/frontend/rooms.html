@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>여러 방 들 - 반지하 커뮤니티</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="lib/purify.min.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="index.html">반지하 익명 커뮤니티</a></h1>
+            <div class="search-bar">
+                <input type="text" id="globalSearchInput" placeholder="게시물 검색...">
+                <button id="globalSearchButton">검색</button>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">최신 게시물</a></li>
+                    <li><a href="freeboard.html">자유 게시판</a></li>
+                    <li><a href="rooms.html" class="active">여러 방 들</a></li>
+                    <li><a href="notice.html">공지사항</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="mainContentArea">
+            <p style="text-align: center; color: #777;">방 목록을 불러오는 중입니다...</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 반지하 익명 커뮤니티. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="createRoomModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>새로운 방 만들기</h2>
+            <form id="createRoomForm">
+                <div class="form-group">
+                    <label for="roomName">방 이름:</label>
+                    <input type="text" id="roomName" name="roomName" required maxlength="50">
+                </div>
+                <div class="form-group">
+                    <label for="roomDescription">방 설명 (선택 사항):</label>
+                    <textarea id="roomDescription" name="roomDescription" rows="3" maxlength="200"></textarea>
+                </div>
+                <button type="submit" class="create-room-submit-button">방 만들기</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
