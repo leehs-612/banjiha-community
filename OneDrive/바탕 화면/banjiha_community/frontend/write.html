@@ -11,15 +11,18 @@
     <script src="lib/quill/quill.min.js" defer></script>
     
     <script src="lib/purify.min.js" defer></script>
-
-    </head>
+</head>
 <body>
     <header>
         <div class="container">
             <h1><a href="index.html">반지하 익명 커뮤니티</a></h1>
+            <div class="search-bar">
+                <input type="text" id="globalSearchInput" placeholder="게시물 검색...">
+                <button id="globalSearchButton">검색</button>
+            </div>
             <nav>
                 <ul>
-                    <li><a href="index.html" class="active">최신 게시물</a></li>
+                    <li><a href="index.html">최신 게시물</a></li>
                     <li><a href="freeboard.html">자유 게시판</a></li>
                     <li><a href="rooms.html">여러 방 들</a></li>
                     <li><a href="notice.html">공지사항</a></li>
@@ -58,6 +61,8 @@
 
     <script>
         // write.html 전용 스크립트
+        // IMPORTANT: 배포 시 이 API_BASE_URL을 실제 백엔드 서버의 공개 URL로 변경해야 합니다.
+        // 예: const API_BASE_URL = 'http://당신의_VM_공용_IP_주소:3000/api';
         const API_BASE_URL = 'http://localhost:3000/api';
 
         // URL 쿼리 파라미터에서 category와 roomSlug 가져오기
@@ -73,18 +78,17 @@
         if (category === 'rooms' && roomSlug) {
             // roomSlug를 실제 방 이름으로 변환 (서버에서 가져오는게 더 좋지만 간단하게 임시 매핑)
             const roomNameMap = {
-                'daily-talk': '일상 이야기 방',
-                'hobby-share': '취미 공유 방',
-                'exercise': '운동 방',
-                'games': '게임 방',
-                'study': '스터디 방',
-                'development': '개발 방'
+                'humor-room': '유머방',
+                'school-room': '학교방',
+                'game-room': '게임방',
+                'daily-room': '일상방',
+                'qna-room': '질문방',
+                'chat-room': '수다방'
             };
             writePageTitle.textContent = `${roomNameMap[roomSlug] || '알 수 없는 방'}에 글 작성`;
         } else if (category === 'main') {
             writePageTitle.textContent = '새 게시물 작성';
         } else {
-            // 다른 게시판의 경우
             const categoryNameMap = {
                 'freeboard': '자유 게시판',
                 'notice': '공지사항'
@@ -96,29 +100,28 @@
         // Quill 에디터 초기화
         let quill;
         document.addEventListener('DOMContentLoaded', () => {
-            // Quill 모듈 설정
             const toolbarOptions = [
-                ['bold', 'italic', 'underline', 'strike'],        // 텍스트 스타일
-                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],        // 제목 크기
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],    // 목록
-                [{ 'script': 'sub'}, { 'script': 'super' }],      // 첨자
-                [{ 'indent': '-1'}, { 'indent': '+1' }],          // 들여쓰기
-                [{ 'direction': 'rtl' }],                         // 텍스트 방향
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'direction': 'rtl' }],
 
-                [{ 'size': ['small', false, 'large', 'huge'] }],  // 글자 크기
-                [{ 'color': [] }, { 'background': [] }],          // 글자 색깔, 배경 색깔
-                [{ 'font': [] }],                                 // 폰트
-                [{ 'align': [] }],                                // 정렬
+                [{ 'size': ['small', false, 'large', 'huge'] }],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'font': [] }],
+                [{ 'align': [] }],
 
-                ['link', 'image'],                                // 링크, 이미지
-                ['clean']                                         // 포맷 지우기
+                ['link', 'image'],
+                ['clean']
             ];
 
             quill = new Quill('#editor-container', {
                 modules: {
                     toolbar: toolbarOptions
                 },
-                theme: 'snow', // snow 테마 (깔끔한 UI)
+                theme: 'snow',
                 placeholder: '내용을 작성해주세요...'
             });
 
@@ -155,7 +158,6 @@
                         const result = await response.json();
                         const imageUrl = result.url; // 서버에서 반환한 이미지 URL
 
-                        // Quill 에디터에 이미지 삽입
                         const range = quill.getSelection();
                         if (range) {
                             quill.insertEmbed(range.index, 'image', imageUrl);
@@ -170,33 +172,30 @@
             };
         }
 
-
         // 폼 제출 핸들러
         document.getElementById('writeForm').addEventListener('submit', async (event) => {
             event.preventDefault();
 
             const title = document.getElementById('postTitle').value.trim();
-            // Quill 에디터에서 HTML 내용을 가져옴
             const content = quill.root.innerHTML.trim(); 
             const author = document.getElementById('postAuthor').value.trim();
             const categoryToSend = document.getElementById('postCategory').value;
             const roomSlugToSend = document.getElementById('postRoomSlug').value;
 
-            if (!title || !content || content === '<p><br></p>') { // 내용이 비었거나 빈 p 태그만 있는 경우
+            if (!title || !content || content === '<p><br></p>') {
                 alert('제목과 내용을 모두 입력해주세요.');
                 return;
             }
 
-            // 작성자 없으면 '익명'으로 처리 (백엔드 기본값도 '익명'이지만 명시적으로)
             const finalAuthor = author || '익명';
 
             try {
                 const postData = {
                     title: title,
-                    content: content, // HTML content
+                    content: content,
                     author: finalAuthor,
                     category: categoryToSend,
-                    roomSlug: roomSlugToSend === '' ? null : roomSlugToSend // 빈 문자열이면 null로 전송
+                    roomSlug: roomSlugToSend === '' ? null : roomSlugToSend
                 };
 
                 const response = await fetch(`${API_BASE_URL}/posts`, {
@@ -247,7 +246,7 @@
             }
         });
 
-        // 네비게이션 링크 클릭 시 URL 해시 변경이 아닌 파일 경로로 이동
+        // 네비게이션 링크 클릭 시 URL 해시 변경이 아닌 파일 경로로 이동 (write.html에서는 다르게 동작)
         document.querySelectorAll('nav ul li a').forEach(link => {
             link.addEventListener('click', (event) => {
                 event.preventDefault();
