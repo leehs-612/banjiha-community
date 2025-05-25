@@ -5,27 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>반지하 (BZ) 익명 커뮤니티 - 공지사항</title>
     <link rel="stylesheet" href="style.css">
+    <script src="lib/purify.min.js" defer></script>
 </head>
 <body>
     <header>
-        <h1>반지하 (BZ)</h1>
-        <p>우리들만의 아늑한 익명 공간</p>
+        <div class="container">
+            <h1><a href="index.html">반지하 익명 커뮤니티</a></h1>
+            <div class="search-bar">
+                <input type="text" id="globalSearchInput" placeholder="게시물 검색...">
+                <button id="globalSearchButton">검색</button>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">최신 게시물</a></li>
+                    <li><a href="freeboard.html">자유 게시판</a></li>
+                    <li><a href="rooms.html">여러 방 들</a></li>
+                    <li><a href="notice.html">공지사항</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">최신 게시물</a></li>
-            <li><a href="freeboard.html">자유 게시판</a></li>
-            <li><a href="rooms.html">여러 방 들</a></li>
-            <li><a href="notice.html">공지사항</a></li>
-        </ul>
-    </nav>
-
-    <div class="container" id="mainContentArea">
+    <main class="container">
+        <div id="mainContentArea">
+            <p style="text-align: center; color: #777;">컨텐츠를 불러오는 중입니다...</p>
         </div>
+    </main>
 
     <footer>
-        <p>&copy; 2024 반지하 (BZ) 익명 커뮤니티. All rights reserved.</p>
+        <div class="container">
+            <p>&copy; 2024 반지하 익명 커뮤니티. All rights reserved.</p>
+        </div>
     </footer>
 
     <script src="script.js"></script>
