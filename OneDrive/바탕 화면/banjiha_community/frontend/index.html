@@ -5,52 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>반지하 (BZ) 익명 커뮤니티 - 최신 게시물</title>
     <link rel="stylesheet" href="style.css">
+    <script src="lib/purify.min.js" defer></script>
 </head>
 <body>
     <header>
-    <div class="container">
-        <h1><a href="index.html">반지하 익명 커뮤니티</a></h1>
-        <div class="search-bar">
-            <input type="text" id="globalSearchInput" placeholder="게시물 검색...">
-            <button id="globalSearchButton">검색</button>
+        <div class="container">
+            <h1><a href="index.html">반지하 익명 커뮤니티</a></h1>
+            <div class="search-bar">
+                <input type="text" id="globalSearchInput" placeholder="게시물 검색...">
+                <button id="globalSearchButton">검색</button>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">최신 게시물</a></li>
+                    <li><a href="freeboard.html">자유 게시판</a></li>
+                    <li><a href="rooms.html">여러 방 들</a></li>
+                    <li><a href="notice.html">공지사항</a></li>
+                </ul>
+            </nav>
         </div>
-    </div>
     </header>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">최신 게시물</a></li>
-            <li><a href="freeboard.html">자유 게시판</a></li>
-            <li><a href="rooms.html">여러 방 들</a></li>
-            <li><a href="notice.html">공지사항</a></li>
-        </ul>
-    </nav>
-
-    <div class="container" id="mainContentArea">
-        <h2>
-            최신 게시물
-            <button class="write-button" id="openWriteModal">새 글 쓰기</button>
-        </h2>
-        <ul class="post-list" id="postList">
-            </ul>
-    </div>
-
-    <div id="writeModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3>새 글 작성</h3>
-            <label for="postTitle">제목:</label>
-            <input type="text" id="postTitle" placeholder="제목을 입력하세요" required>
-
-            <label for="postContent">내용:</label>
-            <textarea id="postContent" placeholder="내용을 입력하세요" required></textarea>
-
-            <button id="submitPost">글 작성</button>
+    <main class="container">
+        <div id="mainContentArea">
+            <p style="text-align: center; color: #777;">컨텐츠를 불러오는 중입니다...</p>
         </div>
-    </div>
+    </main>
 
     <footer>
-        <p>&copy; 2024 반지하 (BZ) 익명 커뮤니티. All rights reserved.</p>
+        <div class="container">
+            <p>&copy; 2024 반지하 익명 커뮤니티. All rights reserved.</p>
+        </div>
     </footer>
 
     <script src="script.js"></script>
